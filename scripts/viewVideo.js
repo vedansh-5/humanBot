@@ -1,5 +1,5 @@
 const { launchBrowser } = require('../core/browserManager');
-const { simulateMouseActivity, jitterMouse } = require('../core/humanSImulator');
+const { simulateMouseActivity, jitterMouse } = require('../core/humanSimulator');
 const { log } = require('../core/logger');
 const { getRandomTime, getVideoWatchTime } = require('../utils/randomUtils');
 const { videoUrl, jitterInterval } = require('../config/config');
