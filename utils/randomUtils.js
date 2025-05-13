@@ -10,6 +10,15 @@ module.exports.getRandomBoolean = (probability = 0.5) => {
     return Math.random() < probability;
 };
 
+module.exports.getRandomViewport = async() => {
+    return {
+        width: Math.floor(Math.random() * (1920 - 1366) + 1366),
+        height: Math.floor(Math.random() * (1080 - 768) + 768),
+        isMobile: Math.random() > 0.8,
+        hasTouch: Math.random() > 0.5, 
+    };
+}
+
 module.exports.getVideoWatchTime = async (page) => {
     try {
         // Get video duration with retry mechanism
