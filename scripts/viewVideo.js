@@ -1,9 +1,16 @@
 const { launchBrowser } = require('../core/browserManager');
-const { simulateMouseActivity, jitterMouse } = require('../core/humanSImulator');
+const { simulateMouseActivity, jitterMouse, naturalScroll } = require('../core/humanSImulator');
 const { log } = require('../core/logger');
 const { getRandomTime, getVideoWatchTime } = require('../utils/randomUtils');
 const { videoUrl, jitterInterval } = require('../config/config');
 const UserAgent  = require('user-agents');
+
+const videoControlsSelectors = {
+    progressBar: '.ytp-progress-bar-container',
+    playButton: '.ytp-play-button',
+    volumeButton: '.ytp-mute-button',
+    settingsButton: '.ytp-settings-button'
+};
 
 module.exports = async function runViewer() {
     log('launching browser');
@@ -75,33 +82,74 @@ module.exports = async function runViewer() {
         }
 
         const watchTimeMs = watchTime * 1000;
-        log('watch time in ms/jitterInterval');
         const jitterSteps = Math.floor(watchTimeMs / jitterInterval);
 
+        log('Simulating natural viewing behavior');
+        
+        // Initial scroll with proper function call
+        await naturalScroll(page);
+        
+        // Simulate mouse activity
+        await simulateMouseActivity(page);
+        
+        // Add initial interaction with video player controls
+        log('Interacting with video controls');
+        try {
+            // Wait for controls to be visible
+            await page.waitForSelector(videoControlsSelectors.progressBar, { timeout: 5000 });
+            
+            // Random interactions with different controls
+            const controls = Object.values(videoControlsSelectors);
+            const randomControl = controls[Math.floor(Math.random() * controls.length)];
+            
+            await page.hover(randomControl);
+            await new Promise(r => setTimeout(r, getRandomInt(500, 1500)));
+            
+        } catch (controlError) {
+            log('Could not interact with video controls, continuing...');
+        }
+        
+        // Regular jitter and interactions during video playback
         for (let i = 0; i < jitterSteps; i++) {
-            await jitterMouse(page);
+            const interactionChance = Math.random();
+            
+            if (interactionChance < 0.7) { // 70% chance to move
+                await jitterMouse(page);
+            } else if (interactionChance < 0.8) { // 10% chance to scroll
+                await naturalScroll(page);
+            } else if (interactionChance < 0.9) { // 10% chance to interact with controls
+                try {
+                    const controls = Object.values(videoControlsSelectors);
+                    const randomControl = controls[Math.floor(Math.random() * controls.length)];
+                    await page.hover(randomControl);
+                    await new Promise(r => setTimeout(r, getRandomInt(300, 800)));
+                } catch (controlError) {
+                    // Ignore control interaction errors
+                }
+            }
+            
             await new Promise(r => setTimeout(r, jitterInterval));
-
-            // check if video is still playing
-            log('check video still playing');
+            
+            // Check if video is still playing
             const isPlaying = await page.evaluate(() => {
                 const video = document.querySelector('video');
                 return video && !video.paused;
             });
-
+            
             if (!isPlaying) {
-                log('not playing, playing the video');
-                await page.evaluate(() => {
-                    const player = document.querySelector('#movie_player');
-                    if (player) {
-                        player.click();
-                    }
-                });
+                log('Video paused, resuming playback');
+                try {
+                    await page.click(videoControlsSelectors.playButton);
+                } catch {
+                    await page.click('#movie_player');
+                }
             }
         }
+
         await new Promise(r => setTimeout(r, watchTimeMs % jitterInterval));
     } catch (error) {
         log('Error during viewing: ', error);
+        console.error(error); // Add full error logging
     } finally {
         log('Closing browser');
         await browser.close();
