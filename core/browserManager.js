@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const UserAgent = require('user-agents');
-const { log } = require('../core/logger');
+const { log } = require('./logger');
 
 puppeteer.use(StealthPlugin());
 
@@ -46,7 +46,11 @@ module.exports.launchBrowser = async () => {
             }
         });
 
-        return browser;
+        // create page here
+        const page = await browser.newPage();
+        await page.setUserAgent(userAgent);
+
+        return { browser, page };
     } catch (error) {
         log('Error launching browser: ', error.message);
         throw error; 

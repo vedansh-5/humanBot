@@ -3,7 +3,6 @@ const { simulateMouseActivity, jitterMouse, naturalScroll } = require('../core/h
 const { log } = require('../core/logger');
 const { getRandomTime, getVideoWatchTime } = require('../utils/randomUtils');
 const { videoUrl, jitterInterval } = require('../config/config');
-const UserAgent  = require('user-agents');
 
 const videoControlsSelectors = {
     progressBar: '.ytp-progress-bar-container',
@@ -13,16 +12,12 @@ const videoControlsSelectors = {
 };
 
 module.exports = async function runViewer() {
-    log('launching browser');
-    const browser = await launchBrowser();
-    const page = await browser.newPage();
-
+    let browser, page;
+    
     try {
-        // Set a random user agent for this page
-        const userAgent = new UserAgent().toString();
-        await page.setUserAgent(userAgent);
-        log(`Set user Agent: ${userAgent}`);
-
+        log('launching browser');
+        ({ browser, page } = await launchBrowser());
+        
         log(`Opening video ${videoUrl}`);
         await page.goto(videoUrl, { waitUntil: 'networkidle0', timeout: 60000 });
     
