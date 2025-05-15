@@ -36,18 +36,23 @@ module.exports.launchBrowser = async () => {
             args: [
                 '--no-sandbox',
                 '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+                '--start-maximized',
                 '--disable-web-security',
+                '--disable-features=site-per-process',
                 `--window-size=${viewport.width},${viewport.height}`,
                 `--user-agent=${userAgent}`,
             ],
-            defaultViewport: {
-                width: viewport.width,
-                height: viewport.height
-            }
+           defaultViewport: null,  // Let the browser handle viewport
+           executablePath: process.platform === 'win32' ? 
+                undefined : 
+                '/usr/bin/google-chrome'
         });
-
-        // create page here
-        const page = await browser.newPage();
+        
+        const context = await browser.createIncognitoBrowserContext();
+        const page = await context.newPage();
+        
+        // Set user agent but let viewport be dynamic
         await page.setUserAgent(userAgent);
 
         return { browser, page };

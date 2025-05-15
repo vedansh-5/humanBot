@@ -1,5 +1,5 @@
 const { launchBrowser } = require('../core/browserManager');
-const { simulateMouseActivity, jitterMouse, naturalScroll } = require('../core/humanSImulator');
+const { simulateMouseActivity, jitterMouse, naturalScroll } = require('../core/humanSimulator');
 const { log } = require('../core/logger');
 const { getRandomTime, getVideoWatchTime } = require('../utils/randomUtils');
 const { videoUrl, jitterInterval } = require('../config/config');
@@ -147,6 +147,8 @@ module.exports = async function runViewer() {
         console.error(error); // Add full error logging
     } finally {
         log('Closing browser');
-        await browser.close();
+        if(browser) {
+            await browser.close();
+        }
     }
 };
