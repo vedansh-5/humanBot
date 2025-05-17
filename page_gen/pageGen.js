@@ -28,7 +28,7 @@ async function generatePages() {
 
         try{
             const response = await openai.chat.completions.create({
-                model: 'gpt-4o',
+                model: 'o3-mini',
                 messages: [
                    { role: 'system', content: 'Return only high-quality HTML. No explanation or markdown.' },
                    { role: 'user', content: finalPrompt }
