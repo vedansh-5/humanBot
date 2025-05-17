@@ -17,6 +17,7 @@ const urlDatabase = [];
 
 async function generatePages() {
     const outputDir = path.resolve('./page_gen/generated_pages/');
+    const urlFile = path.join(outputDir, 'referrer_urls.json');
     if(!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
 
     for(let i=0; i<prompts.length; i++){
@@ -61,7 +62,7 @@ async function generatePages() {
 
     // Save referrer URL list
     fs.writeFileSync(urlFile, JSON.stringify(urlDatabase, null, 2), 'utf-8');
-    console.log(`🔗 Saved referrer URLs to ${urlFile}`);
+    console.log(`🔗 Saved ${urlDatabase.length} URLs to ${urlFile}`);
 }
 
 generatePages();
