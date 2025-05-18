@@ -2,6 +2,10 @@ const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 const UserAgent = require('user-agents');
 const { log } = require('./logger');
+const fs = require('fs');
+const path = require('path');
+// const { useProxy } = require('../config/config');
+const { botLog } = require('../scripts/viewVideo');
 
 puppeteer.use(StealthPlugin());
 
@@ -24,12 +28,34 @@ function getRandomUserAgent() {
     }).toString();
 }
 
+function getRandomProxy(){
+    const proxies = fs.readFileSync(path.resolve(__dirname, '../config/proxies.txt'), 'utf-8').split('\n').map(l => l.trim()).filter(Boolean);
+    return proxies[Math.floor(Math.random() * proxies.length)];
+}
+
 module.exports.launchBrowser = async () => {
     try {
         const viewport = getRandomViewport();
         const userAgent = getRandomUserAgent();
+        const proxy = getRandomProxy();
+        botLog(`Using proxy`, proxy);
+        console.log('Using proxy', proxy);
         log(`Using viewport: ${viewport.width},${viewport.height}`);
         log(`Using user agent: ${userAgent}`);
+
+        // Split out creds if any
+        // let proxyUrl = proxy;
+        // let proxyAuth = null;
+        // if(proxy.includes('@')) {
+        //     const [auth, host] = proxy.split('@');
+        //     proxyAuth = { username: auth.split(':')[0], password: auth.split(':')[1] };
+        //     proxyUrl = host;
+        // }
+
+        // Extract proxy parts
+        const [ip, port, username, password] = proxy.split(':');
+        let proxyAuth = { username, password };
+
 
         const browser =  await puppeteer.launch({
             headless: false,
@@ -42,11 +68,10 @@ module.exports.launchBrowser = async () => {
                 '--disable-features=site-per-process',
                 `--window-size=${viewport.width},${viewport.height}`,
                 `--user-agent=${userAgent}`,
+                `--proxy-server=http://${ip}:${port}`,
             ],
            defaultViewport: null,  // Let the browser handle viewport
-           executablePath: process.platform === 'win32' ? 
-                undefined : 
-                '/usr/bin/google-chrome'
+           executablePath: process.platform === 'win32' ? undefined : '/usr/bin/google-chrome'
         });
         
         const context = await browser.createIncognitoBrowserContext();
@@ -54,6 +79,12 @@ module.exports.launchBrowser = async () => {
         
         // Set user agent but let viewport be dynamic
         await page.setUserAgent(userAgent);
+
+        // Apply HTTP basic auth if needed
+        if (proxyAuth) {
+            await page.authenticate(proxyAuth);
+            botLog('Proxy auth applied for', proxyAuth.username);
+        }
 
         return { browser, page };
     } catch (error) {

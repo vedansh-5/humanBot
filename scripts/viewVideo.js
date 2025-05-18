@@ -2,7 +2,9 @@ const { launchBrowser } = require('../core/browserManager');
 const { simulateMouseActivity, jitterMouse, naturalScroll } = require('../core/humanSimulator');
 const { log } = require('../core/logger');
 const { getRandomTime, getVideoWatchTime } = require('../utils/randomUtils');
-const { videoUrl, jitterInterval } = require('../config/config');
+const { videoUrl, jitterInterval, userReferrer, referrerListPath } = require('../config/config');
+const fs = require('fs');
+const LOG_FILE ='./bot.log';
 
 const videoControlsSelectors = {
     progressBar: '.ytp-progress-bar-container',
@@ -11,15 +13,30 @@ const videoControlsSelectors = {
     settingsButton: '.ytp-settings-button'
 };
 
+function botLog(...args) {
+    const line = `[${new Date().toISOString()}] ${args.join(' ')}\n`;
+    fs.appendFile(LOG_FILE, line);
+    console.log(...args);
+}
+
 module.exports = async function runViewer() {
     let browser, page;
+    let entryUrl = videoUrl;
+    if(userReferrer) {
+        const list = JSON.parse(fs.readFileSync(referrerListPath, 'utf-8'));
+        const pick = list[Math.floor(Math.random() * list.length)].url;
+        entryUrl = pick;
+    }
     
     try {
         log('launching browser');
+        botLog('Launching browser');
         ({ browser, page } = await launchBrowser());
         
         log(`Opening video ${videoUrl}`);
-        await page.goto(videoUrl, { waitUntil: 'networkidle0', timeout: 60000 });
+        botLog('Starting run for video: ', videoUrl);
+        botLog('Referrer', entryUrl);
+        await page.goto(entryUrl, { waitUntil: 'networkidle0', timeout: 60000 });
     
         //wait for player to be ready
         log('waiting for player to be ready');
@@ -75,7 +92,8 @@ module.exports = async function runViewer() {
             log('Error calculating watch time, using fallback:', watchTimeError);
             watchTime = 300; // 5 minutes fallback
         }
-
+        
+        botLog('Watching for: ', watchTime);
         const watchTimeMs = watchTime * 1000;
         const jitterSteps = Math.floor(watchTimeMs / jitterInterval);
 
@@ -142,6 +160,7 @@ module.exports = async function runViewer() {
         }
 
         await new Promise(r => setTimeout(r, watchTimeMs % jitterInterval));
+        botLog('Successfully watched video');
     } catch (error) {
         log('Error during viewing: ', error);
         console.error(error); // Add full error logging

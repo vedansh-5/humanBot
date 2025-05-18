@@ -1,0 +1,4 @@
+[2025-05-18T06:49:05.279Z] Launching browser
+[2025-05-18T06:49:05.294Z] Error during viewing:  TypeError: botLog is not a function
+[2025-05-18T06:49:43.849Z] Launching browser
+[2025-05-18T06:49:46.664Z] Error during viewing:  TypeError: browser.createIncognitoBrowserContext is not a function
