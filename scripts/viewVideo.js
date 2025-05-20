@@ -1,11 +1,10 @@
 const { launchBrowser } = require('../core/browserManager');
 const { simulateMouseActivity, jitterMouse, naturalScroll } = require('../core/humanSimulator');
-const { log } = require('../core/logger');
+const { log, botLog } = require('../core/logger');
 const { getRandomTime, getVideoWatchTime } = require('../utils/randomUtils');
 const { videoUrl, jitterInterval, userReferrer, referrerListPath } = require('../config/config');
 const fs = require('fs');
 const { timeout } = require('puppeteer');
-const LOG_FILE ='./bot.log';
 
 const videoControlsSelectors = {
     progressBar: '.ytp-progress-bar-container',
@@ -14,11 +13,6 @@ const videoControlsSelectors = {
     settingsButton: '.ytp-settings-button'
 };
 
-function botLog(...args) {
-    const line = `[${new Date().toISOString()}] ${args.join(' ')}\n`;
-    fs.appendFile(LOG_FILE, line);
-    console.log(...args);
-}
 
 async function getRandomReferrer(){
     try{

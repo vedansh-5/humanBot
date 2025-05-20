@@ -5,7 +5,7 @@ const { log } = require('./logger');
 const fs = require('fs');
 const path = require('path');
 // const { useProxy } = require('../config/config');
-const { botLog } = require('../scripts/viewVideo');
+const { botLog } = require('../core/logger');
 
 puppeteer.use(StealthPlugin());
 

@@ -2,7 +2,7 @@ const runViewer = require('./scripts/viewVideo');
 const genPages = require('./page_gen/pageGen');
 const deploy = require('./page_gen/deploy');
 
-const VIEWS_PER_CYCLE = 10000;
+const VIEWS_PER_CYCLE = 5000;
 
 async function generateAndDeploy() {
     try {
