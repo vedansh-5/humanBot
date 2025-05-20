@@ -43,19 +43,9 @@ module.exports.launchBrowser = async () => {
         log(`Using viewport: ${viewport.width},${viewport.height}`);
         log(`Using user agent: ${userAgent}`);
 
-        // Split out creds if any
-        // let proxyUrl = proxy;
-        // let proxyAuth = null;
-        // if(proxy.includes('@')) {
-        //     const [auth, host] = proxy.split('@');
-        //     proxyAuth = { username: auth.split(':')[0], password: auth.split(':')[1] };
-        //     proxyUrl = host;
-        // }
-
         // Extract proxy parts
         const [ip, port, username, password] = proxy.split(':');
         let proxyAuth = { username, password };
-
 
         const browser =  await puppeteer.launch({
             headless: false,
@@ -74,18 +64,14 @@ module.exports.launchBrowser = async () => {
            executablePath: process.platform === 'win32' ? undefined : '/usr/bin/google-chrome'
         });
         
-        const context = await browser.createIncognitoBrowserContext();
-        const page = await context.newPage();
-        
+        const page = await browser.newPage();
         // Set user agent but let viewport be dynamic
         await page.setUserAgent(userAgent);
-
         // Apply HTTP basic auth if needed
         if (proxyAuth) {
             await page.authenticate(proxyAuth);
             botLog('Proxy auth applied for', proxyAuth.username);
         }
-
         return { browser, page };
     } catch (error) {
         log('Error launching browser: ', error.message);

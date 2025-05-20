@@ -28,7 +28,7 @@ async function getRandomReferrer(){
     }
 }
 
-module.exports = async function runViewer() {
+module.exports = async function runViewer(mode = 'watchtime') {
     let browser, page;
     let entryUrl = videoUrl;
     if(userReferrer) {
@@ -115,89 +115,101 @@ module.exports = async function runViewer() {
         });
         await simulateMouseActivity(page);
 
-        log("determining the watchtime");
-        let watchTime;
-        try {
-            watchTime = await getVideoWatchTime(page);
-            if (!watchTime || watchTime <= 0) {
-                throw new Error('Invalid watch time calculated');
-            }
-            log(`Watch time calculated: ${Math.floor(watchTime)} seconds`);
-        } catch (watchTimeError) {
-            log('Error calculating watch time, using fallback:', watchTimeError);
-            watchTime = 300; // 5 minutes fallback
-        }
-        
-        botLog('Watching for: ', watchTime);
-        const watchTimeMs = watchTime * 1000;
-        const jitterSteps = Math.floor(watchTimeMs / jitterInterval);
+        switch(mode.toLowerCase()) {
+            case 'view':
+                // Quick view mode
+                const quickViewTime = Math.floor(Math.random() * 2000); // 0-2000ms
+                log(`Quick view mode: watching for ${quickViewTime}ms`);
+                await page.waitForSelector('#movie_player');
+                await page.click('#movie_player');
+                await new Promise(r => setTimeout(r, quickViewTime));
+                break;
 
-        log('Simulating natural viewing behavior');
-        
-        // Initial scroll with proper function call
-        await naturalScroll(page);
-        
-        // Simulate mouse activity
-        await simulateMouseActivity(page);
-        
-        // Add initial interaction with video player controls
-        log('Interacting with video controls');
-        try {
-            // Wait for controls to be visible
-            await page.waitForSelector(videoControlsSelectors.progressBar, { timeout: 5000 });
-            
-            // Random interactions with different controls
-            const controls = Object.values(videoControlsSelectors);
-            const randomControl = controls[Math.floor(Math.random() * controls.length)];
-            
-            await page.hover(randomControl);
-            await new Promise(r => setTimeout(r, getRandomInt(500, 1500)));
-            
-        } catch (controlError) {
-            log('Could not interact with video controls, continuing...');
-        }
-        
-        // Regular jitter and interactions during video playback
-        for (let i = 0; i < jitterSteps; i++) {
-            const interactionChance = Math.random();
-            
-            if (interactionChance < 0.7) { // 70% chance to move
-                await jitterMouse(page);
-            } else if (interactionChance < 0.8) { // 10% chance to scroll
+            case 'watchtime':
+                // Full watch mode
+                log('Watch time mode: calculating duration...');
+                let watchTime = await getVideoWatchTime(page);
+                if (!watchTime || watchTime <= 0) {
+                    watchTime = 300; // 5 min fallback
+                }
+                log(`Watching for ${Math.floor(watchTime)} seconds`);
+                
+                botLog('Watching for: ', watchTime);
+                const watchTimeMs = watchTime * 1000;
+                const jitterSteps = Math.floor(watchTimeMs / jitterInterval);
+
+                log('Simulating natural viewing behavior');
+                
+                // Initial scroll with proper function call
                 await naturalScroll(page);
-            } else if (interactionChance < 0.9) { // 10% chance to interact with controls
+                
+                // Simulate mouse activity
+                await simulateMouseActivity(page);
+                
+                // Add initial interaction with video player controls
+                log('Interacting with video controls');
                 try {
+                    // Wait for controls to be visible
+                    await page.waitForSelector(videoControlsSelectors.progressBar, { timeout: 5000 });
+                    
+                    // Random interactions with different controls
                     const controls = Object.values(videoControlsSelectors);
                     const randomControl = controls[Math.floor(Math.random() * controls.length)];
+                    
                     await page.hover(randomControl);
-                    await new Promise(r => setTimeout(r, getRandomInt(300, 800)));
+                    await new Promise(r => setTimeout(r, getRandomInt(500, 1500)));
+                    
                 } catch (controlError) {
-                    // Ignore control interaction errors
+                    log('Could not interact with video controls, continuing...');
                 }
-            }
-            
-            await new Promise(r => setTimeout(r, jitterInterval));
-            
-            // Check if video is still playing
-            const isPlaying = await page.evaluate(() => {
-                const video = document.querySelector('video');
-                return video && !video.paused;
-            });
-            
-            if (!isPlaying) {
-                log('Video paused, resuming playback');
-                try {
-                    await page.click(videoControlsSelectors.playButton);
-                } catch {
-                    await page.click('#movie_player');
+                
+                // Regular jitter and interactions during video playback
+                for (let i = 0; i < jitterSteps; i++) {
+                    const interactionChance = Math.random();
+                    
+                    if (interactionChance < 0.7) { // 70% chance to move
+                        await jitterMouse(page);
+                    } else if (interactionChance < 0.8) { // 10% chance to scroll
+                        await naturalScroll(page);
+                    } else if (interactionChance < 0.9) { // 10% chance to interact with controls
+                        try {
+                            const controls = Object.values(videoControlsSelectors);
+                            const randomControl = controls[Math.floor(Math.random() * controls.length)];
+                            await page.hover(randomControl);
+                            await new Promise(r => setTimeout(r, getRandomInt(300, 800)));
+                        } catch (controlError) {
+                            // Ignore control interaction errors
+                        }
+                    }
+                    
+                    await new Promise(r => setTimeout(r, jitterInterval));
+                    
+                    // Check if video is still playing
+                    const isPlaying = await page.evaluate(() => {
+                        const video = document.querySelector('video');
+                        return video && !video.paused;
+                    });
+                    
+                    if (!isPlaying) {
+                        log('Video paused, resuming playback');
+                        try {
+                            await page.click(videoControlsSelectors.playButton);
+                        } catch {
+                            await page.click('#movie_player');
+                        }
+                    }
                 }
-            }
+
+                await new Promise(r => setTimeout(r, watchTimeMs % jitterInterval));
+                botLog('Successfully watched video');
+                break;
+
+            default:
+                throw new Error(`Invalid mode: ${mode}`);
         }
 
-        await new Promise(r => setTimeout(r, watchTimeMs % jitterInterval));
-        botLog('Successfully watched video');
     } catch (error) {
-        log('Error during viewing: ', error);
+        log('Error during viewing:', error);
         console.error(error); // Add full error logging
     } finally {
         log('Closing browser');

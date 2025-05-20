@@ -19,16 +19,16 @@ async function generateAndDeploy() {
     }
 }
 
-async function runViewCycle() {
+async function runViewCycle(mode) {
     try {
         for (let i = 1; i <= VIEWS_PER_CYCLE; i++) {
-            console.log(`\nView ${i} of ${VIEWS_PER_CYCLE}`);
-            await runViewer();
+            console.log(`\n${mode.toUpperCase()} ${i} of ${VIEWS_PER_CYCLE}`);
+            await runViewer(mode);
             // Add small delay between views
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, Math.floor(Math.random() * 2000)));
         }
     } catch (error) {
-        console.error('Error in view cycle:', error);
+        console.error(`Error in ${mode} cycle:`, error);
     }
 }
 
@@ -58,4 +58,8 @@ process.on('SIGINT', () => {
     process.exit(0);
 });
 
-main();
+// Usage:
+// node index.js view     // for view-only mode
+// node index.js watch    // for watch-time mode
+const mode = process.argv[2]?.toLowerCase() || 'watchtime';
+runViewCycle(mode);

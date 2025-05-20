@@ -1,11 +1,12 @@
 const runViewer = require('./viewVideo');
 
-(async () => {
-    try {
-        console.log('Starting viewer bot...');
-        await runViewer();
-        console.log('Viewer bot finished.');
-    } catch (err) {
-        console.error('Viewer bot crashed:', err);
-    }
-})();
+// Get mode from command line argument
+const mode = process.argv[2]?.toLowerCase() || 'watchtime';
+
+// Validate mode
+if (!['view', 'watchtime'].includes(mode)) {
+    console.error('Invalid mode, Use node runViewer.js [view|watchtime]');
+    process.exit(1);
+}
+
+runViewer(mode);
