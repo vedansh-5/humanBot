@@ -1,134 +1,122 @@
 [
   {
     "type": "Tech Blog Post",
-    "prompt": "You are a tech blogger. Given the YouTube video link: {{VIDEO_LINK}}, create a fully styled Tailwind CSS HTML page that looks like a professional blog post. Include a headline, introduction, 4 informative paragraphs explaining the topic, relevant subheadings, and a call-to-action button with id='yt-link' and href='#'. Avoid direct mentions of YouTube. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "prompt": "You are a tech blogger. Given the YouTube video link: {{VIDEO_LINK}}, create a fully styled Tailwind CSS HTML page that looks like a professional blog post. Include a headline, introduction, 4 informative paragraphs explaining the topic, relevant subheadings, and a call-to-action button linking directly to {{VIDEO_LINK}}. Avoid direct mentions of YouTube. Add a visit tracking script before </body>."
   },
   {
     "type": "Product Landing Page",
-    "prompt": "You are a product marketer. Given the YouTube video link: {{VIDEO_LINK}}, generate a fully styled Tailwind CSS landing page promoting a product related to the video content. Include catchy headlines, 3 benefit sections with icons, feature highlights, customer testimonial quotes, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "prompt": "You are a product marketer. Given the YouTube video link: {{VIDEO_LINK}}, generate a fully styled Tailwind CSS landing page promoting a product related to the video content. Include catchy headlines, 3 benefit sections with icons, feature highlights, customer testimonial quotes, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Internal Company Newsletter",
-    "prompt": "Create an internal company newsletter page styled with Tailwind CSS for employees. Given the YouTube video link: {{VIDEO_LINK}}, include a newsletter header with date, 3 news sections related to the video topic, an editorial note, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Tutorial Guide",
+    "prompt": "You are a technical writer. Given the YouTube video link: {{VIDEO_LINK}}, generate a step-by-step tutorial page styled with Tailwind CSS. Include numbered instructions, tips, warnings, screenshots placeholders, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "User Guide / Tutorial",
-    "prompt": "You are a technical writer. Given the YouTube video link: {{VIDEO_LINK}}, generate a step-by-step tutorial page styled with Tailwind CSS. Include numbered instructions, tips, warnings, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Review Page",
+    "prompt": "Create a detailed review page styled with Tailwind CSS about the content from {{VIDEO_LINK}}. Include star ratings, pros/cons list, detailed analysis, user comments section, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Event Announcement",
-    "prompt": "Create a stylish event announcement page using Tailwind CSS. The event is related to the YouTube video link: {{VIDEO_LINK}}. Include event title, date/time, location, agenda highlights, speaker info, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Resource Hub",
+    "prompt": "Create a resource hub page styled with Tailwind CSS featuring the content from {{VIDEO_LINK}}. Include downloadable resources, related links, key takeaways, and a prominent call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Press Release",
-    "prompt": "Write a professional press release styled HTML page using Tailwind CSS. Given the YouTube video link: {{VIDEO_LINK}}, include headline, subheadline, date, body paragraphs with quotes, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Newsletter Layout",
+    "prompt": "You are a newsletter designer. Using {{VIDEO_LINK}}, create a Tailwind CSS HTML page in newsletter format. Include a header with title/date, 3 sections of insights, and a call-to-action button linking to {{VIDEO_LINK}}. Avoid direct mentions of YouTube. Add a visit tracking script before </body>."
   },
   {
-    "type": "Startup Landing Page",
-    "prompt": "Generate a startup landing page styled with Tailwind CSS related to the YouTube video link: {{VIDEO_LINK}}. Include tagline, problem/solution sections, features, team intro, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Case Study Page",
+    "prompt": "Create a professional case study page styled with Tailwind CSS based on {{VIDEO_LINK}}. Include background, problem, solution, results, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
     "type": "FAQ Page",
-    "prompt": "Create a FAQ page styled with Tailwind CSS about the topic of the YouTube video link: {{VIDEO_LINK}}. Include at least 6 question-answer pairs and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "prompt": "You are a content strategist. Given the YouTube video link: {{VIDEO_LINK}}, create a Tailwind CSS FAQ page with at least 6 detailed Q&A pairs and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Case Study",
-    "prompt": "Write a detailed case study page using Tailwind CSS based on the YouTube video link: {{VIDEO_LINK}}. Include overview, problem, solution, results, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Event Announcement",
+    "prompt": "Create a stylish Tailwind CSS page for announcing an event based on {{VIDEO_LINK}}. Include event title, agenda, date/time, speakers, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Community Forum Thread Preview",
-    "prompt": "Generate a community forum thread preview page styled with Tailwind CSS, centered around the YouTube video link: {{VIDEO_LINK}}. Include thread title, 3 example posts with user names and timestamps, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Webinar Invite",
+    "prompt": "Generate a Tailwind CSS page for a webinar invite inspired by {{VIDEO_LINK}}. Include title, speaker info, schedule, benefits of attending, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Research Paper Summary",
-    "prompt": "Create a research paper summary page styled with Tailwind CSS about the topic related to the YouTube video link: {{VIDEO_LINK}}. Include abstract, methodology, results, conclusion, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Portfolio Project",
+    "prompt": "Design a Tailwind CSS portfolio project description using {{VIDEO_LINK}}. Include project summary, technologies, challenges, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Lifestyle Blog Entry",
-    "prompt": "You are a lifestyle blogger. Generate a rich Tailwind CSS styled blog entry page inspired by the YouTube video link: {{VIDEO_LINK}}. Include engaging narrative, images placeholders, related tips, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Conference Page",
+    "prompt": "Using {{VIDEO_LINK}}, build a Tailwind CSS conference schedule. Include sessions, speakers, timing, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Industry News Article",
-    "prompt": "Write an industry news article styled page using Tailwind CSS on a topic related to the YouTube video link: {{VIDEO_LINK}}. Include headline, byline, article body, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Mini Documentation Page",
+    "prompt": "Create a small documentation-style Tailwind CSS page based on {{VIDEO_LINK}}. Include purpose, setup, usage, and call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Personal Opinion Editorial",
-    "prompt": "Generate a personal opinion editorial page styled with Tailwind CSS related to the YouTube video link: {{VIDEO_LINK}}. Include a strong headline, opinion paragraphs, counter-arguments, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
-  },
-  {
-    "type": "Product Review Page",
-    "prompt": "Create a detailed product review page styled with Tailwind CSS based on the YouTube video link: {{VIDEO_LINK}}. Include product features, pros/cons list, star rating, user comments preview, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
-  },
-  {
-    "type": "Knowledge Base Article",
-    "prompt": "Generate a knowledge base article styled with Tailwind CSS about the topic of the YouTube video link: {{VIDEO_LINK}}. Include sections, subheadings, FAQs, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Startup Pitch",
+    "prompt": "Use {{VIDEO_LINK}} to generate a Tailwind CSS startup pitch page. Include problem, solution, metrics, testimonials, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
     "type": "Job Posting",
-    "prompt": "Create a job posting page styled with Tailwind CSS related to the YouTube video link: {{VIDEO_LINK}}. Include job title, description, responsibilities, requirements, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "prompt": "Create a Tailwind CSS styled job posting page using {{VIDEO_LINK}}. Include role title, responsibilities, qualifications, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Podcast Episode Notes",
-    "prompt": "Generate a podcast episode notes page styled with Tailwind CSS inspired by the YouTube video link: {{VIDEO_LINK}}. Include episode summary, timestamps, guest info, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Team Page",
+    "prompt": "Create a company/team info page in Tailwind CSS using {{VIDEO_LINK}}. Include team bios, roles, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Conference Schedule",
-    "prompt": "Write a conference schedule page styled with Tailwind CSS related to the YouTube video link: {{VIDEO_LINK}}. Include agenda times, speaker names, session titles, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Whitepaper Download",
+    "prompt": "Design a Tailwind CSS whitepaper download page based on {{VIDEO_LINK}}. Include abstract, why it matters, author bio, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Whitepaper Landing Page",
-    "prompt": "Create a whitepaper landing page styled with Tailwind CSS based on the YouTube video link: {{VIDEO_LINK}}. Include abstract, benefits of downloading, author info, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Beta Feature Promo",
+    "prompt": "Create a Tailwind CSS announcement page for a beta feature using {{VIDEO_LINK}}. Include feature description, beta sign-up section, known limitations, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "How-to Checklist",
-    "prompt": "Generate a how-to checklist page styled with Tailwind CSS related to the YouTube video link: {{VIDEO_LINK}}. Include step-by-step checklist items, tips, warnings, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Marketing Campaign Page",
+    "prompt": "Use {{VIDEO_LINK}} to generate a Tailwind CSS marketing campaign page. Include campaign message, benefits, participation steps, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Portfolio Project Description",
-    "prompt": "Create a portfolio project description page styled with Tailwind CSS inspired by the YouTube video link: {{VIDEO_LINK}}. Include project overview, technologies used, challenges, results, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Personal Blog Entry",
+    "prompt": "You are a personal blogger. Based on {{VIDEO_LINK}}, create a Tailwind CSS blog entry. Include a short story, learnings, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "About Us Page",
-    "prompt": "Generate an About Us page styled with Tailwind CSS for a company related to the YouTube video link: {{VIDEO_LINK}}. Include company mission, team bios, values, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Startup About Page",
+    "prompt": "Design a Tailwind CSS 'About Us' page for a startup based on {{VIDEO_LINK}}. Include mission, founding story, team highlight, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Customer Testimonials",
-    "prompt": "Write a customer testimonials page styled with Tailwind CSS based on the YouTube video link: {{VIDEO_LINK}}. Include 5 testimonials with names, photos placeholders, quotes, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Pricing Page",
+    "prompt": "Create a Tailwind CSS pricing page using {{VIDEO_LINK}} as inspiration. Include pricing tiers, features, FAQs, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
+  },
+  {
+    "type": "Course Promo Page",
+    "prompt": "Generate a Tailwind CSS course promotion page from {{VIDEO_LINK}}. Include overview, curriculum, instructor profile, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
+  },
+  {
+    "type": "Micro SaaS Feature Page",
+    "prompt": "Using {{VIDEO_LINK}}, create a Tailwind CSS product feature page. Highlight a specific tool or workflow, benefits, screenshots placeholders, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
+  },
+  {
+    "type": "Demo Walkthrough",
+    "prompt": "You are a demo creator. Use {{VIDEO_LINK}} to build a Tailwind CSS walkthrough page. Include steps with highlights, benefits, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
+  },
+  {
+    "type": "Customer Testimonial Wall",
+    "prompt": "Create a Tailwind CSS testimonials wall using {{VIDEO_LINK}} as reference. Include 5+ testimonials with photos and quotes, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
+  },
+  {
+    "type": "Product Comparison Page",
+    "prompt": "Based on {{VIDEO_LINK}}, build a Tailwind CSS product comparison page. Include feature matrix, pricing comparison, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
+  },
+  {
+    "type": "Podcast Recap",
+    "prompt": "Create a podcast recap page using Tailwind CSS from {{VIDEO_LINK}}. Include summary, timestamps, guest details, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
     "type": "Video Transcript Summary",
-    "prompt": "Generate a video transcript summary page styled with Tailwind CSS for the YouTube video link: {{VIDEO_LINK}}. Include key quotes, timestamps, summary paragraphs, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "prompt": "Use {{VIDEO_LINK}} to generate a Tailwind CSS transcript summary page. Include timestamps, quotes, takeaways, and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   },
   {
-    "type": "Tutorial Video Companion",
-    "prompt": "Create a tutorial video companion page styled with Tailwind CSS related to the YouTube video link: {{VIDEO_LINK}}. Include summary, resources, code snippets, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
-  },
-  {
-    "type": "Social Media Campaign Landing",
-    "prompt": "Generate a social media campaign landing page styled with Tailwind CSS related to the YouTube video link: {{VIDEO_LINK}}. Include campaign goals, hashtags, user engagement tips, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
-  },
-  {
-    "type": "Newsletter Signup Promo",
-    "prompt": "Create a newsletter signup promo page styled with Tailwind CSS inspired by the YouTube video link: {{VIDEO_LINK}}. Include signup benefits, form placeholders (no real form), privacy notice, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
-  },
-  {
-    "type": "Training Course Overview",
-    "prompt": "Generate a training course overview page styled with Tailwind CSS related to the YouTube video link: {{VIDEO_LINK}}. Include course syllabus, instructor info, benefits, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
-  },
-  {
-    "type": "Beta Feature Announcement",
-    "prompt": "Write a beta feature announcement page styled with Tailwind CSS for a product related to the YouTube video link: {{VIDEO_LINK}}. Include feature description, beta sign-up info, known issues, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
-  },
-  {
-    "type": "Simple Info Page",
-    "prompt": "Create a clean and simple informational page styled with Tailwind CSS related to the YouTube video link: {{VIDEO_LINK}}. Include a brief introduction, 2 short paragraphs, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
-  },
-  {
-    "type": "Basic Landing Page",
-    "prompt": "Generate a basic landing page styled with Tailwind CSS for the YouTube video link: {{VIDEO_LINK}}. Include headline, short description, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
-  },
-  {
-    "type": "Minimal Blog Post",
-    "prompt": "Write a minimalistic blog post styled with Tailwind CSS related to the YouTube video link: {{VIDEO_LINK}}. Include headline, 2 paragraphs, and a call-to-action button with id='yt-link' and href='#'. Additionally, embed this script just before the closing </body> tag:\n\n```html\n<script>\n  window.addEventListener('load', () => {\n    fetch('/api/logVisit', {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify({\n        page: location.pathname,\n        video: new URLSearchParams(location.search).get('v'),\n        ts: new Date().toISOString()\n      })\n    }).catch(() => {});\n  });\n</script>\n```\nReturn only HTML."
+    "type": "Interactive Checklist",
+    "prompt": "Based on {{VIDEO_LINK}}, create a Tailwind CSS checklist page. Include checklist items with tips and a call-to-action button linking to {{VIDEO_LINK}}. Add a visit tracking script before </body>."
   }
 ]

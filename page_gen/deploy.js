@@ -1,79 +1,89 @@
-const { exec, execSync } = require('child_process');
+const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-function deploy() {
+async function deploy() {
     const srcDir = path.resolve(__dirname, 'generated_pages');
-    const deployDir = path.resolve(__dirname, 'vercel_deploy');
+    const deployementUrlsFile = path.resolve(__dirname, 'deployement_urls.json');
+    const deployementUrls = [];
 
-    // Ensure source directory exists
-    if (!fs.existsSync(srcDir)) {
-        console.log('Creating source directory:', srcDir);
-        fs.mkdirSync(srcDir, { recursive: true });
-        return; // Exit if no files to deploy yet
-    }
+    // Read all HTML files
+    const files = fs.readdirSync(srcDir)
+    .filter(file => file.endsWith('.html'))
+    .sort((a, b) => {
+        const numA = parseInt(a.match(/\d+/)?.[0] || '0', 10);
+        const numB = parseInt(b.match(/\d+/)?.[0] || '0', 10);
+        return numA - numB;
+    });
 
-    // Clean and create deploy directory
-    if (fs.existsSync(deployDir)) {
-        fs.rmSync(deployDir, { recursive: true });
-    }
-    fs.mkdirSync(deployDir, { recursive: true });
-
-    // Copy files
-    const files = fs.readdirSync(srcDir);
-    console.log(`Found ${files.length} files to deploy`);
-    
     for (const file of files) {
-        const srcPath = path.join(srcDir, file);
-        // Skip if directory
-        if (fs.statSync(srcPath).isDirectory()) continue;
-        
-        const content = fs.readFileSync(srcPath, 'utf-8');
-        fs.writeFileSync(path.join(deployDir, file), content);
+        const pageName = path.basename(file, '.html');
+        const deployDir = path.resolve(__dirname, `deployed/vercel_deploy_${pageName}`);
+
+        console.log(`Deploying ${file}..`);
+
+        // Create deploy directory
+        fs.mkdirSync(deployDir, { recursive: true });
+
+        // Copy the HTML file
+        fs.copyFileSync(
+            path.join(srcDir, file),
+            path.join(deployDir, 'index.html')
+        );
+
+        // Create vercel.json
+        const vercelConfig = {
+            "version": 2,
+            "builds": [
+                { "src": "*.html", "use": "@vercel/static" }
+            ],
+            "routes": [
+                { "src": "/(.*)", "dest": "/index.html" }
+            ]
+        };
+
+        fs.writeFileSync(
+            path.join(deployDir, 'vercel.json'),
+            JSON.stringify(vercelConfig, null, 2)
+        );
+
+        try{
+            // Deploy this page
+            console.log(`Dploying ${pageName}`);
+            const output = execSync(`cd "${deployDir}" && vercel deploy --prod --yes`, {
+                stdio: 'pipe',
+                encoding: 'utf-8'
+            });
+
+            // Extract deployement URL
+            const deployUrl = output.match(/https:\/\/[^\s]+\.vercel\.app/)?.[0];
+            if(deployUrl) {
+                deployementUrls.push({
+                    page: pageName,
+                    url: deployUrl
+                });
+                console.log(`Deployed ${pageName} to ${deployUrl}`);
+            }
+
+            // Wait a bit between deployements
+            await new Promise(resolve => setTimeout(resolve, 2000));
+        } catch(error) {
+            console.error(`Failed to deploy ${pageName}: `, error.message);
+        }
     }
 
-    // Write vercel config
+    // Save all deployement URLs
+
+    fs.writeFileSync(deployementUrlsFile, JSON.stringify(deployementUrls, null, 2));
+    console.log(`\n Saved ${deployementUrls.length} deployement URLs to deployement_urls.json`);
+
+    // Update referrer URLs file
     fs.writeFileSync(
-        path.join(deployDir, 'vercel.json'),
-        JSON.stringify({
-            rewrites: [{ source: "/(.*)", destination: "/$1.html" }],
-            cleanUrls: false
-        }, null, 2)
+        path.join(srcDir, 'referrer_urls.json'),
+        JSON.stringify(deployementUrls, null, 2)
     );
-
-    // Deploy
-    console.log('Deploying to Vercel...');
-    let deploymentUrl;
-    try {
-        const output = execSync(`cd ${deployDir} && vercel --prod --confirm`, { 
-            stdio: 'inherit'
-        });
-        console.log('Deployment complete!');
-        
-        // Extract deployment URL from Vercel output
-        const urlMatch = output.toString().match(/https?:\/\/[^ ]+/);
-        deploymentUrl = urlMatch ? urlMatch[0] : null;
-    } catch (error) {
-        console.error('Deployment failed:', error.message);
-        return;
-    }
-
-    // After successful deployment, save the deployment info
-    const deploymentInfo = {
-        baseUrl: deploymentUrl,
-        timestamp: new Date().toISOString(),
-        pages: urlDatabase.map(page => ({
-            ...page,
-            fullUrl: `${deploymentUrl}/${page.url}`
-        }))
-    };
-
-    fs.writeFileSync(
-        path.join(__dirname, 'deployment_info.json'),
-        JSON.stringify(deploymentInfo, null, 2)
-    );
-
-    console.log('Deployment URLs saved to deployment_info.json');
+    console.log('Updated referrer_urls.json');
 }
 
 module.exports = deploy;
+deploy();

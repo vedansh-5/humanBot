@@ -63,25 +63,23 @@ async function generatePages() {
                     max_tokens: 2000
                 });
 
-                let html = response.choices[0].message.content;
-
                 // Add tracking script
                 const trackingScript = `
                 <script>
                     window.addEventListener('load', () => {
-                        const videoId = new URLSearchParams(window.location.search).get('v');
                         fetch('/api/logVisit', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 page: location.pathname,
-                                video: videoId,
+                                video: new URLSearchParams(location.search).get('v'),
                                 ts: new Date().toISOString()
                             })
                         }).catch(console.error);
                     });
                 </script>`;
 
+                let html = response.choices[0].message.content;
                 html = html.replace('</body>', `${trackingScript}\n</body>`);
 
                 // Generate filename from prompt index

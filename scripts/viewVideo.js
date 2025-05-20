@@ -4,6 +4,7 @@ const { log } = require('../core/logger');
 const { getRandomTime, getVideoWatchTime } = require('../utils/randomUtils');
 const { videoUrl, jitterInterval, userReferrer, referrerListPath } = require('../config/config');
 const fs = require('fs');
+const { timeout } = require('puppeteer');
 const LOG_FILE ='./bot.log';
 
 const videoControlsSelectors = {
@@ -19,19 +20,59 @@ function botLog(...args) {
     console.log(...args);
 }
 
+async function getRandomReferrer(){
+    try{
+        const list = JSON.parse(fs.readFileSync(referrerListPath, 'utf-8'));
+        if(!Array.isArray(list) || list.length === 0){
+            throw new Error('No referrer URLs available');
+        }
+        const pick = list[Math.floor(Math.random() * list.length)];
+        return pick.url;
+    } catch(error) {
+        log('Error getting referrer URL:', error.message);
+        return null;
+    }
+}
+
 module.exports = async function runViewer() {
     let browser, page;
     let entryUrl = videoUrl;
     if(userReferrer) {
-        const list = JSON.parse(fs.readFileSync(referrerListPath, 'utf-8'));
-        const pick = list[Math.floor(Math.random() * list.length)].url;
-        entryUrl = pick;
+       const referrerUrl = await getRandomReferrer();
+       if(referrerUrl) {
+        entryUrl = referrerUrl;
+        log(`Using referrer URL: ${entryUrl}`);
+       }
     }
     
     try {
         log('launching browser');
         botLog('Launching browser');
         ({ browser, page } = await launchBrowser());
+
+        // Navigate to referrer page
+        log(`Opening referrer page: ${entryUrl}`);
+        await page.goto(entryUrl, { waitUntil: 'networkidle0', timeout: 60000 });
+
+        // Wait a bit and simulate natural behaviour
+        await naturalScroll(page);
+        await simulateMouseActivity(page);
+        
+        // Find and click the video link
+        log('Looking for video link');
+        const videoLinks = await page.$$(`a[href*="${videoUrl}]`);
+        if(videoLinks.length > 0) {
+            // Click a random video link if multiple exist
+            const randomLink = videoLinks[Math.floor(Math.random() * videoLinks.length)];
+            log('Found video link, clicking...');
+            await randomLink.click();
+            
+            // Wait for navigation to video
+            await page.waitForNavigation({ waitUntil: 'networkidle0' });
+        } else {
+            log('No video link found, going directly to video');
+            await page.goto(videoUrl, { waitUntil: 'networkidle0', timeout: 60000 });
+        }
         
         log(`Opening video ${videoUrl}`);
         botLog('Starting run for video: ', videoUrl);
