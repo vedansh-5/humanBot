@@ -16,7 +16,7 @@ async function cleanup() {
         }
     }
 
-    console.log('Cleanup complete');
+    console.log('Deployment cleanup complete');
 }
 
 cleanup().catch(console.error);
