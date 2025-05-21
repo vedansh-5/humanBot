@@ -16,6 +16,20 @@ async function cleanup() {
         }
     }
 
+    // Remove old deployment url files
+    const filesToRemove = [
+        'deployement_url.json',
+        'deployement_urls.json'
+    ];
+
+    for (const file of filesToRemove) {
+        const filePath = path.join(baseDir, file);
+        if(fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+            console.log(`Removed ${file}`);
+        }
+    }
+
     console.log('Deployment cleanup complete');
 }
 

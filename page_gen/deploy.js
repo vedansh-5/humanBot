@@ -49,14 +49,14 @@ async function deploy() {
 
         try{
             // Deploy this page
-            console.log(`Dploying ${pageName}`);
+            console.log(`Deploying ${pageName}`);
             const output = execSync(`cd "${deployDir}" && vercel deploy --prod --yes`, {
                 stdio: 'pipe',
                 encoding: 'utf-8'
             });
 
             // Extract deployement URL
-            const deployUrl = output.match(/https:\/\/[^\s]+\.vercel\.app/)?.[0];
+            const deployUrl = output.match(/(?:Production|Deployment).*?(https:\/\/[^\s]+\.vercel\.app)/i)?.[1];
             if(deployUrl) {
                 deployementUrls.push({
                     page: pageName,
@@ -66,7 +66,7 @@ async function deploy() {
             }
 
             // Wait a bit between deployements
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            await new Promise(resolve => setTimeout(resolve, 1000));
         } catch(error) {
             console.error(`Failed to deploy ${pageName}: `, error.message);
         }

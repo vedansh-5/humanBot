@@ -10,3 +10,8 @@
 [2025-05-20T08:29:30.930Z] Proxy auth applied for zrcgouxs
 [2025-05-20T08:29:59.294Z] Starting run for video:  https://www.youtube.com/watch?v=yU1rRzNqmRI
 [2025-05-20T08:29:59.294Z] Referrer https://verceldeploypage-8-e3vn722an-vedansh-5s-projects.vercel.app
+[2025-05-21T08:24:16.530Z] Launching browser
+[2025-05-21T08:24:16.540Z] Using proxy 104.239.41.161:6516:zrcgouxs:8apg27k5j6ok
+[2025-05-21T08:24:18.471Z] Proxy auth applied for zrcgouxs
+[2025-05-21T08:24:41.715Z] Starting run for video:  https://www.youtube.com/watch?v=yU1rRzNqmRI
+[2025-05-21T08:24:41.716Z] Referrer https://verceldeploypage-4-m4iaqlvgf-vedansh-5s-projects.vercel.app
