@@ -5,7 +5,7 @@ require('dotenv').config();
 
 // List of valid OpenAI models
 const VALID_MODELS = ['gpt-3.5-turbo', 'gpt-4'];
-const DEFAULT_MODEL = 'gpt-3.5-turbo';
+const DEFAULT_MODEL = 'gpt-4o';
 
 async function generatePages() {
     // Validate OpenAI configuration
@@ -114,3 +114,4 @@ async function generatePages() {
 
 // Fix the export to not immediately execute
 module.exports = generatePages;
+generatePages();

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-async function cleanup() {
+async function cleanupPages() {
     const baseDir = path.resolve(__dirname, '../page_gen/generated_pages');
 
     const files = fs.readdirSync(baseDir);
@@ -13,4 +13,4 @@ async function cleanup() {
     console.log('Cleanup of generated pages completed');
 }
 
-cleanup().catch(console.error);
+cleanupPages().catch(console.error);

@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-async function cleanup() {
+async function cleanupDeploy() {
     const baseDir = path.resolve(__dirname, '../page_gen/deployed');
     
     // Remove old vercel deployment directories
@@ -33,4 +33,4 @@ async function cleanup() {
     console.log('Deployment cleanup complete');
 }
 
-cleanup().catch(console.error);
+cleanupDeploy().catch(console.error);

@@ -2,3 +2,7 @@ node_modules
 .env
 generated_pages
 vercel_deploy_page-*
+deployed
+bot.log
+*.txt
+*.log

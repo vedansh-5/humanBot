@@ -73,7 +73,6 @@ async function deploy() {
     }
 
     // Save all deployement URLs
-
     fs.writeFileSync(deployementUrlsFile, JSON.stringify(deployementUrls, null, 2));
     console.log(`\n Saved ${deployementUrls.length} deployement URLs to deployement_urls.json`);
 
